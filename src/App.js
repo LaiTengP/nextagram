@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import HomePage from './pages/HomePage'
+import { Route, Switch } from "react-router-dom"
+import UserProfilePage from "./pages/UserProfilePage"
+import NavbarDisplay from "./components/Navbar"
+import SignInModal from "./modals/SignInModal"
+import { ToastContainer } from 'react-toastify';
+import MyProfilePage from './pages/MyProfilePage'
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"))
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+    <ToastContainer />
+    <div>
+      <NavbarDisplay token={token} setToken={setToken}/>
+      <SignInModal/>
+
+    <Switch>
+            <Route exact path="/">
+              <HomePage/>
+            </Route>
+
+            <Route path="/users/:id/:username">
+              <UserProfilePage/>
+            </Route>
+
+            <Route path="/profile" >
+              <MyProfilePage/>
+              {/* { 
+              token
+              ? <MyProfilePage/>
+              : <SignInForm/> 
+              } */}
+            </Route>
+
+    </Switch>
+  </div>
+  </>
+  )
 }
 
 export default App;
